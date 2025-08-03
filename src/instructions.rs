@@ -6,10 +6,11 @@ use crate::cpu::*;
 pub struct Instruction {
     pub name: &'static str,
     pub mode: AddressingMode,
-    pub exec: fn(&mut Cpu),
+    pub exec: fn(&mut Cpu) -> u8,
     pub cycles: u8,
 }
 
+#[rustfmt::skip]
 pub static LOOKUP: [Instruction; 256] = {
     use AddressingMode::*;
 
@@ -20,8 +21,7 @@ pub static LOOKUP: [Instruction; 256] = {
         cycles: 2,
     }; 256];
 
-    #[rustfmt::skip]
-    vec![
+    table = [
         Instruction { name:"BRK", exec: Cpu::brk, mode: Immediate, cycles: 7 }, Instruction { name:"ORA", exec: Cpu::ora, mode: IndirectX, cycles: 6 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied,   cycles: 2 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 8 }, Instruction { name:"???", exec: Cpu::nop, mode: Implied,   cycles: 3 }, Instruction { name:"ORA", exec: Cpu::ora, mode: ZeroPage,  cycles: 3 }, Instruction { name:"ASL", exec: Cpu::asl, mode: ZeroPage,  cycles: 5 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 5 }, Instruction { name:"PHP", exec: Cpu::php, mode: Implied, cycles: 3 }, Instruction { name:"ORA", exec: Cpu::ora, mode: Immediate, cycles: 2 }, Instruction { name:"ASL", exec: Cpu::asl, mode: Implied, cycles: 2 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 2 }, Instruction { name:"???", exec: Cpu::nop, mode: Implied,   cycles: 4 }, Instruction { name:"ORA", exec: Cpu::ora, mode: Absolute,  cycles: 4 }, Instruction { name:"ASL", exec: Cpu::asl, mode: Absolute,  cycles: 6 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 6 }, 
         Instruction { name:"BPL", exec: Cpu::bpl, mode: Relative,  cycles: 2 }, Instruction { name:"ORA", exec: Cpu::ora, mode: IndirectY, cycles: 5 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied,   cycles: 2 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 8 }, Instruction { name:"???", exec: Cpu::nop, mode: Implied,   cycles: 4 }, Instruction { name:"ORA", exec: Cpu::ora, mode: ZeroPageX, cycles: 4 }, Instruction { name:"ASL", exec: Cpu::asl, mode: ZeroPageX, cycles: 6 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 6 }, Instruction { name:"CLC", exec: Cpu::clc, mode: Implied, cycles: 2 }, Instruction { name:"ORA", exec: Cpu::ora, mode: AbsoluteY, cycles: 4 }, Instruction { name:"???", exec: Cpu::nop, mode: Implied, cycles: 2 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 7 }, Instruction { name:"???", exec: Cpu::nop, mode: Implied,   cycles: 4 }, Instruction { name:"ORA", exec: Cpu::ora, mode: AbsoluteX, cycles: 4 }, Instruction { name:"ASL", exec: Cpu::asl, mode: AbsoluteX, cycles: 7 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 7 }, 
         Instruction { name:"JSR", exec: Cpu::jsr, mode: Absolute,  cycles: 6 }, Instruction { name:"AND", exec: Cpu::and, mode: IndirectX, cycles: 6 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied,   cycles: 2 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 8 }, Instruction { name:"BIT", exec: Cpu::bit, mode: ZeroPage,  cycles: 3 }, Instruction { name:"AND", exec: Cpu::and, mode: ZeroPage,  cycles: 3 }, Instruction { name:"ROL", exec: Cpu::rol, mode: ZeroPage,  cycles: 5 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 5 }, Instruction { name:"PLP", exec: Cpu::plp, mode: Implied, cycles: 4 }, Instruction { name:"AND", exec: Cpu::and, mode: Immediate, cycles: 2 }, Instruction { name:"ROL", exec: Cpu::rol, mode: Implied, cycles: 2 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 2 }, Instruction { name:"BIT", exec: Cpu::bit, mode: Absolute,  cycles: 4 }, Instruction { name:"AND", exec: Cpu::and, mode: Absolute,  cycles: 4 }, Instruction { name:"ROL", exec: Cpu::rol, mode: Absolute,  cycles: 6 }, Instruction { name:"???", exec: Cpu::xxx, mode: Implied, cycles: 6 }, 
